@@ -1,6 +1,6 @@
 ﻿namespace WebAPI.Entities;
 
-    public class Origen: TablaBase
+public class Origen: TablaBase
     {
     }
 
