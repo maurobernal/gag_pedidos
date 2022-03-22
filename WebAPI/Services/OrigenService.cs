@@ -1,12 +1,13 @@
 ﻿using WebAPI.Entities;
 namespace WebAPI.Services;
 
-public class Service
+public class OrigenService
 {
-    public Service()
+    public OrigenService()
     {
         entidades = new();
     }
+
     public List<Origen> entidades { get; set; }
     public int AddOrigen(Origen origen)
     {
@@ -36,8 +37,7 @@ public class Service
 
     }
 
-    public Origen SelectOrigen(int ID) 
-  => entidades.Where(o => o.Id == ID && o.Habilitado == true).FirstOrDefault();
+    public Origen SelectOrigen(int ID) => entidades.FirstOrDefault(o => o.Id == ID && o.Habilitado);
 
 
     public List<Origen> SelectListOrigen() =>
