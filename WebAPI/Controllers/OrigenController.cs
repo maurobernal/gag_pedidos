@@ -6,48 +6,47 @@ namespace WebAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class OrigenController : Controller  
+public class OriginController : Controller  
 {
-    private OrigenService _origenService;
+    private OriginService _originService;
 
-    public OrigenController()
+    public OriginController()
     {
-        _origenService = new();
+        _originService = new();
     }
     [HttpPost]
-    public IActionResult Create([FromBody] Origen origen)
+    public IActionResult Create([FromBody] Origin origin)
     {
-        var res = _origenService.AddOrigen(origen);
+        var res = _originService.AddOrigin(origin);
         return Ok(res);
     }
 
-
     [HttpPut("id")]
-    public IActionResult Update(Origen origen, int id)
+    public IActionResult Update(Origin origin, int id)
     {
-        if (id != origen.Id) return BadRequest();
-        var res = _origenService.UpdateOrigen(origen);
+        if (id != origin.id) return BadRequest();
+        var res = _originService.UpdateOrigin(origin);
         return Ok(res);
     }
 
     [HttpDelete("id")]
     public IActionResult Delete(int id)
     {
-        var res = _origenService.DeleteOrigen(id);
+        var res = _originService.DeleteOrigin(id);
         return Ok(res);
     }
 
     [HttpGet("id")]
-    public IActionResult Listar(int id)
+    public IActionResult ListOne(int id)
     {
-        var res = _origenService.SelectOrigen(id);
+        var res = _originService.SelectOrigin(id);
         return Ok();
     }
 
-    [HttpGet("Listar")]
-    public IActionResult ListarAll()
+    [HttpGet("List")]
+    public IActionResult ListAll()
     {
-        var res = _origenService.SelectListOrigen();
+        var res = _originService.SelectListOrigin();
         return Ok(res);
     }
 }
