@@ -3,7 +3,10 @@ namespace WebAPI.Services;
 
 public class Service
 {
-
+    public Service()
+    {
+        entidades = new();
+    }
     public List<Origen> entidades { get; set; }
     public int AddOrigen(Origen origen)
     {
