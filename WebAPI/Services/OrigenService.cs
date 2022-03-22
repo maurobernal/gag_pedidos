@@ -1,9 +1,9 @@
 ﻿using WebAPI.Entities;
 namespace WebAPI.Services;
 
-public class Service
+public class OrigenService
 {
-    public Service()
+    public OrigenService()
     {
         entidades = new();
     }
