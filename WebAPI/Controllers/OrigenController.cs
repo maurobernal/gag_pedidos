@@ -9,9 +9,11 @@ namespace WebAPI.Controllers
     public class OrigenController : Controller
     {
         private OrigenService _origenService;
+        private ProveedoresService _proveedoresService;
         public OrigenController()
         {
             _origenService = new();
+            _proveedoresService = new();
         }
 
 
@@ -44,12 +46,20 @@ namespace WebAPI.Controllers
         {
             var res = _origenService.SelectListOrigen();
             return Ok(res);
-        }
 
-        [HttpGet("{id}")]
-        public IActionResult Listar(int ID)
+        }
+            [HttpGet("Proveedores")]
+            public IActionResult ListarProveedresAll()
+            {
+                var res = _proveedoresService.GetProveedores();
+                return Ok(res);
+            }
+
+            [HttpGet("{id}")]
+        public IActionResult Listar(int id)
         {
-            var res = _origenService.SelectOrigen(ID);
+            var res = _origenService.SelectOrigen(id);
+            if(res == null) return NotFound();
             return Ok(res);
         }
 
