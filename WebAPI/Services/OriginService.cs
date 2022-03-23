@@ -1,4 +1,5 @@
-﻿using WebAPI.Entities;
+﻿using WebAPI.DTOs;
+using WebAPI.Entities;
 using WebAPI.InfraStructure;
 
 namespace WebAPI.Services;
@@ -11,22 +12,25 @@ public class OriginService
     {
         _conection = new AppDBContext();
     }
-    public int AddOrigin(Origin origin)
+    public int AddOrigin(OriginDTO origin)
     {
-        _conection.Origins.Add(origin);
+        Origin O = new Origin();   
+        O.Description = origin.Description;
+        O.Active = true;
+
+        _conection.Origins.Add(O);
         _conection.SaveChanges();
 
-        return origin.id;
+        return O.id;
     }
 
-    public bool UpdateOrigin(Origin origin)
-    {
-
+    public bool UpdateOrigin(OriginDTO origin)
+    {   
+  
         var entity = _conection.Origins.Where(o => o.id == origin.id).FirstOrDefault();
         if (entity == null) return false;
 
         entity.Description = origin.Description;
-        entity.Active = origin.Active;
 
         _conection.SaveChanges();
 
@@ -37,6 +41,7 @@ public class OriginService
     {
         var entity = _conection.Origins.Where(o => o.id == ID).FirstOrDefault();
         if (entity == null) return false;
+
         _conection.Origins.Remove(entity);
         _conection.SaveChanges();
 

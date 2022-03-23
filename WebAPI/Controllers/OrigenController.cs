@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebAPI.Entities;
+using WebAPI.DTOs;
 using WebAPI.Services;
 
 namespace WebAPI.Controllers;
@@ -15,14 +15,14 @@ public class OriginController : Controller
         _originService = new();
     }
     [HttpPost]
-    public IActionResult Create([FromBody] Origin origin)
+    public IActionResult Create([FromBody] OriginDTO origin)
     {
         var res = _originService.AddOrigin(origin);
         return Ok(res);
     }
 
     [HttpPut("id")]
-    public IActionResult Update(Origin origin, int id)
+    public IActionResult Update(OriginDTO origin, int id)
     {
         if (id != origin.id) return BadRequest();
         var res = _originService.UpdateOrigin(origin);
