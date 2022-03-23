@@ -1,47 +1,50 @@
-﻿using WebAPI.Entities;
+using WebAPI.Entities;
+using WebAPI.Infrastructure;
 namespace WebAPI.Services;
 
 public class ProductoService
 {
+    private readonly AppDBContext _conexion;
     public ProductoService()
     {
-        entidades = new();
+        _conexion = new AppDBContext();
     }
-    public List<Producto> entidades { get; set; }
-    public int AddProducto(Producto Producto)
+    public int AddProducto(Producto producto)
     {
-        Producto.Id = new Random().Next(100000);
-        entidades.Add(Producto);
-        return Producto.Id;
+        _conexion.Add(producto);
+        _conexion.SaveChanges();
+        return producto.Id;
     }
 
-    public bool UpdateProducto(Producto Producto) {
+    public bool UpdateProducto(Producto producto)
+    {
 
-        var entidad = entidades.Where(o => o.Id == Producto.Id ).FirstOrDefault();
+        var entidad = _conexion.Productos.Where(o => o.Id == producto.Id).FirstOrDefault();
         if (entidad == null) return false;
 
-        entidad.Descripcion = Producto.Descripcion;
-        entidad.Habilitado = Producto.Habilitado;
-
-        entidades.Add(Producto);
+        entidad.Descripcion = producto.Descripcion;
+        entidad.Habilitado = producto.Habilitado;
+        _conexion.Add(producto);
+        _conexion.SaveChanges();
         return true;
     }
 
     public bool DeleteProducto(int ID)
     {
-        var entidad = entidades.Where(o => o.Id == ID).FirstOrDefault();
+        var entidad = _conexion.Productos.Where(o => o.Id == ID).FirstOrDefault();
         if (entidad == null) return false;
-        entidades.Remove(entidad);
+        _conexion.Remove(entidad);
+        _conexion.SaveChanges();
         return true;
 
     }
 
-    public Producto SelectProducto(int ID) 
-  => entidades.Where(o => o.Id == ID && o.Habilitado == true).FirstOrDefault();
+    public Producto SelectProducto(int ID)
+  => _conexion.Productos.Where(o => o.Id == ID && o.Habilitado == true).FirstOrDefault();
 
 
     public List<Producto> SelectListProducto() =>
-        entidades.Where(o => o.Habilitado == true).ToList();
+        _conexion.Productos.Where(o => o.Habilitado == true).ToList();
 
 
 

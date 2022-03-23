@@ -7,12 +7,11 @@ public class OrigenService
     private readonly AppDBContext _conexion;
     public OrigenService()
     {
-       _conexion = new AppDBContext();
+        _conexion = new AppDBContext();
     }
     public int AddOrigen(Origen origen)
     {
-        
-        _conexion.Origenes.Add(origen);
+        _conexion.Add(origen);
         _conexion.SaveChanges();
         return origen.Id;
     }
@@ -25,7 +24,6 @@ public class OrigenService
         entidad.Descripcion = origen.Descripcion;
         entidad.Habilitado = origen.Habilitado;
 
-       // _conexion.Origenes.Add(origen);
         _conexion.SaveChanges();
         return true;
     }
@@ -34,7 +32,7 @@ public class OrigenService
     {
         var entidad = _conexion.Origenes.Where(o => o.Id == ID).FirstOrDefault();
         if (entidad == null) return false;
-        _conexion.Origenes.Remove(entidad);
+        _conexion.Remove(entidad);
         _conexion.SaveChanges();
         return true;
 

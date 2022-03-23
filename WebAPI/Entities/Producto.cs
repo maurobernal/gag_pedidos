@@ -1,7 +1,7 @@
-﻿namespace WebAPI.Entities;
+namespace WebAPI.Entities;
+
 
 public class Producto : TablaBase
 {
-    public int TiposDeProductoID { get; set; }
+    public  int TipoDeProductoID { get; set; }
 }
-
