@@ -41,6 +41,8 @@ public class ProductController : Controller
     public IActionResult ListOne(int id)
     {
         var res = _productService.SelectProduct(id);
+        if (res == null) return NotFound();
+
         return Ok(res);
     }
 

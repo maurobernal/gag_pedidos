@@ -40,7 +40,8 @@ public class OriginController : Controller
     public IActionResult ListOne(int id)
     {
         var res = _originService.SelectOrigin(id);
-        return Ok();
+        if (res == null) return NotFound();
+        return Ok(res);
     }
 
     [HttpGet("List")]

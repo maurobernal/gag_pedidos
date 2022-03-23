@@ -1,3 +1,6 @@
+using WebAPI.InfraStructure;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<AppDBContext>(o => o.UseSqlServer("Data Source=172.0.0.15;Initial Catalog=EF1;User=maxi;password=maxi1"));
 
 var app = builder.Build();
 
@@ -23,3 +27,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+// maxi clave: maxi1
