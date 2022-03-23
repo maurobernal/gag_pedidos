@@ -40,7 +40,8 @@ public class OrigenController : Controller
     public IActionResult ListOne(int id)
     {
         var res = _origenService.SelectOrigen(id);
-        return Ok();
+        if (res == null) return NotFound("registro no existente");
+        return Ok(res);
     }
 
     [HttpGet("Listar")]

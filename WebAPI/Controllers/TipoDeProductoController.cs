@@ -40,7 +40,7 @@ public class TipoDeProductoController : Controller
     public IActionResult ListOne(int id)
     {
         var res = _tipoDeProductoService.SelectTipoDeProducto(id);
-        return Ok();
+        return Ok(res);
     }
 
     [HttpGet("Listar")]

@@ -1,48 +1,55 @@
+
+using WebAPI.Infrastructure;
 using WebAPI.Entities;
 namespace WebAPI.Services;
 
 public class TipoDeProductoService
 {
+    private readonly AppDBContext _conexion;
     public TipoDeProductoService()
     {
-        entidades = new();
+        _conexion = new AppDBContext();
     }
-    public List<TipoDeProducto> entidades { get; set; }
     public int AddTipoDeProducto(TipoDeProducto tipoDeProducto)
     {
-        tipoDeProducto.Id = new Random().Next(100000);
-        entidades.Add(tipoDeProducto);
+
+        _conexion.Add(tipoDeProducto);
+        _conexion.SaveChanges();
         return tipoDeProducto.Id;
     }
 
     public bool UpdateTipoDeProducto(TipoDeProducto tipoDeProducto)
     {
 
-        var entidad = entidades.Where(o => o.Id == tipoDeProducto.Id).FirstOrDefault();
+        var entidad = _conexion.TipoDeProductos.Where(o => o.Id == tipoDeProducto.Id).FirstOrDefault();
         if (entidad == null) return false;
 
         entidad.Descripcion = tipoDeProducto.Descripcion;
         entidad.Habilitado = tipoDeProducto.Habilitado;
 
-        entidades.Add(tipoDeProducto);
+        _conexion.Add(tipoDeProducto);
+
+        _conexion.SaveChanges();
         return true;
     }
 
     public bool DeleteTipoDeProducto(int ID)
     {
-        var entidad = entidades.Where(o => o.Id == ID).FirstOrDefault();
+        var entidad = _conexion.TipoDeProductos.Where(o => o.Id == ID).FirstOrDefault();
         if (entidad == null) return false;
-        entidades.Remove(entidad);
+        _conexion.Remove(entidad);
+
+        _conexion.SaveChanges();
         return true;
 
     }
 
     public TipoDeProducto SelectTipoDeProducto(int ID)
-  => entidades.Where(o => o.Id == ID && o.Habilitado == true).FirstOrDefault();
+  => _conexion.TipoDeProductos.Where(o => o.Id == ID && o.Habilitado == true).FirstOrDefault();
 
 
     public List<TipoDeProducto> SelectListTipoDeProducto() =>
-        entidades.Where(o => o.Habilitado == true).ToList();
+        _conexion.TipoDeProductos.Where(o => o.Habilitado == true).ToList();
 
 
 
