@@ -1,0 +1,20 @@
+﻿
+
+<div>
+
+    @Html.ActionLink("click text", "json","Home", new {id = "123"}, null)
+    
+    @Url.Action("redirect","Home", new {id="123"} )
+
+
+    @ViewData["dato1"]
+    @ViewData["legajo"]
+    @ViewData["fecha"]
+
+    <row>
+        @foreach (var item in ViewData["lista"] as List<string>)
+        {
+            <a>@item</a>
+        }
+    </row>
+</div>

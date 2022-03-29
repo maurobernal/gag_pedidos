@@ -1,28 +1,40 @@
 ﻿using WebAPI.Entities;
 using WebAPI.Infrastructure;
+using WebAPI.DTOs;
+using WebAPI.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+
 namespace WebAPI.Services;
 
-public class OrigenService
+public class OrigenService : IOrigenService
 {
     private readonly AppDBContext _conexion;
-    public OrigenService()
+    private readonly IMapper _mapper;
+    public OrigenService(IMapper mapper)
     {
         _conexion = new AppDBContext();
+        _mapper = mapper;
     }
-    public int AddOrigen(Origen origen)
+    public int AddOrigen(OrigenDTO origen)
     {
-        _conexion.Add(origen);
+        //Origen O = new Origen();
+        //O.Descripcion = origen.Descripcion;
+
+        var O = _mapper.Map<Origen>(origen);    
+
+        _conexion.Add(O);
         _conexion.SaveChanges();
-        return origen.Id;
+        return O.Id;
     }
 
-    public bool UpdateOrigen(Origen origen) {
+    public bool UpdateOrigen(OrigenDTO origen)
+    {
 
-        var entidad = _conexion.Origenes.Where(o => o.Id == origen.Id ).FirstOrDefault();
+        var entidad = _conexion.Origenes.Where(o => o.Id == origen.Id).FirstOrDefault();
         if (entidad == null) return false;
 
         entidad.Descripcion = origen.Descripcion;
-        entidad.Habilitado = origen.Habilitado;
 
         _conexion.SaveChanges();
         return true;
@@ -38,12 +50,18 @@ public class OrigenService
 
     }
 
-    public Origen SelectOrigen(int ID) 
-  => _conexion.Origenes.Where(o => o.Id == ID && o.Habilitado == true).FirstOrDefault();
+    public OrigenDTO SelectOrigen(int ID)
+  => _conexion.Origenes.Where(o => o.Id == ID && o.Habilitado == true).ProjectTo<OrigenDTO>(_mapper.ConfigurationProvider).FirstOrDefault();
 
 
-    public List<Origen> SelectListOrigen() =>
-        _conexion.Origenes.Where(o => o.Habilitado == true).ToList();
+    public List<OrigenDTO> SelectListOrigen()
+    {
+        var List_O = _conexion.Origenes.Where(o => o.Habilitado == true).ToList();
+        
+        return _mapper.Map<List<OrigenDTO>>(List_O);
+    }
+
+       
 
 
 

@@ -30,6 +30,17 @@ namespace WebAPI.Infrastructure;
     public virtual DbSet<TipoDeProducto> TipoDeProductos { set; get; }
 
 
+    public override int SaveChanges()
+    {
+
+        foreach (var entry in ChangeTracker.Entries<TablaBase>())
+            if (entry.State == EntityState.Added)
+                entry.Entity.Habilitado = true;
+       var result = base.SaveChanges();
+
+        return result;
+    }
+
 
 }
 

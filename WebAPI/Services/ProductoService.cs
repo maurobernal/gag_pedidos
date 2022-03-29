@@ -1,30 +1,38 @@
 using WebAPI.Entities;
+using WebAPI.DTOs;
 using WebAPI.Infrastructure;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+
 namespace WebAPI.Services;
 
-public class ProductoService
+public class ProductoService : IProductoService
 {
     private readonly AppDBContext _conexion;
-    public ProductoService()
+    private readonly IMapper _mapper;
+    public ProductoService(IMapper mapper)
     {
         _conexion = new AppDBContext();
+        _mapper = mapper;
     }
-    public int AddProducto(Producto producto)
+    public int AddProducto(ProductoDTO producto)
     {
-        _conexion.Add(producto);
+        var O = _mapper.Map<Producto>(producto);
+
+        _conexion.Add(O);
         _conexion.SaveChanges();
         return producto.Id;
     }
 
-    public bool UpdateProducto(Producto producto)
+    public bool UpdateProducto(ProductoDTO producto)
     {
 
         var entidad = _conexion.Productos.Where(o => o.Id == producto.Id).FirstOrDefault();
         if (entidad == null) return false;
 
-        entidad.Descripcion = producto.Descripcion;
-        entidad.Habilitado = producto.Habilitado;
-        _conexion.Add(producto);
+        var O = _mapper.Map<Producto>(producto);
+
+        _conexion.Add(O);
         _conexion.SaveChanges();
         return true;
     }
@@ -39,13 +47,17 @@ public class ProductoService
 
     }
 
-    public Producto SelectProducto(int ID)
-  => _conexion.Productos.Where(o => o.Id == ID && o.Habilitado == true).FirstOrDefault();
+    public ProductoDTO SelectProducto(int ID)
+  => _conexion.Productos.Where(o => o.Id == ID && o.Habilitado == true).ProjectTo<ProductoDTO>(_mapper.ConfigurationProvider).FirstOrDefault();
 
 
-    public List<Producto> SelectListProducto() =>
-        _conexion.Productos.Where(o => o.Habilitado == true).ToList();
+    public List<ProductoDTO> SelectListProducto() 
+    {
 
+        var List_O = _conexion.Origenes.Where(o => o.Habilitado == true).ToList();
 
+        return _mapper.Map<List<ProductoDTO>>(List_O);
+    }
+        
 
 }

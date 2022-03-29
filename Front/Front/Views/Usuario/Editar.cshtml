@@ -1,0 +1,13 @@
+﻿@using Front.Models;
+@model UsuarioModels;
+
+@using (Html.BeginForm("Editar", "Usuario", FormMethod.Post)) 
+{
+    <input type="text" value="Esto es un texto" id="tbx1" name="tbx1">
+    
+    <input type="text" value="Esto es un texto" id="tbx2" name="tbx2">
+    
+    <input type="text" value="Esto es un texto" id="tbx3" name="tbx3">
+    
+    <button type="submit">Enviar</button>
+}

@@ -1,0 +1,16 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+
+    "outDir": "../wwwroot/js",
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es2016"
+  },
+  "exclude": [
+    "node_modules",
+    "wwwroot"
+  ]
+}

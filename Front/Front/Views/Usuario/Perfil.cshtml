@@ -1,0 +1,33 @@
+﻿@using Front.Models;
+@model UsuarioModels;
+
+
+<h1> Perfil de Usuario:</h1>
+
+<div class="container">
+
+    @if (Model != null)
+    {
+        <div class="row">
+            @Model.Nombre @Model.Apellido
+        </div>
+        <div class="row">
+            @Model.FechaNac.ToShortDateString()
+
+        </div>
+        <div class="row">
+            @Model.Id - @Model.Legajo
+        </div>
+        @Html.ActionLink("Editar","Editar","Usuario", new{id=Model.Id})
+    }
+
+    else{
+    <div class="row">
+        no existe el usuario
+    </div>
+
+    }
+
+
+
+</div>
