@@ -1,0 +1,10 @@
+﻿@using FrontEnd.Models
+@model UserModel
+
+@using (Html.BeginForm("Edit", "User", FormMethod.Post))
+{
+    <input type="text" value="Maxi" name="Tbx1" id="Tbx1" />
+    <input type="text" value="pintos" name="Tbx2" id="Tbx2" />
+    <input type="text" value="Maximiliano" name="Tbx3" id="Tbx3" />
+    <button type="submit"> enviar </button>
+}

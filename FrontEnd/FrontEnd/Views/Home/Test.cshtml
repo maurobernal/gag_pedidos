@@ -1,0 +1,40 @@
+﻿
+
+@{
+
+}
+
+
+<div> 
+    @Html.ActionLink("click text", "exampleAction", "exampleController", new { id = "123"}, null)
+    <a href="/exampleController/exampleAction/123">Click text</a>
+</div>
+
+<div>
+    @Url.Action("exampleAction", "exampleController", new { id = "123" })
+    /exampleController/exampleAction/123
+</div>
+<h1>Hola Mundo soy maxi</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h1>ViewData</h1>
+        <div class="row">
+            @ViewData["dato1"]
+        </div>
+        <div class="row">
+            @ViewData["legajo"]
+        </div>
+        <div class="row">
+            @(DateTime.Parse((ViewData["fecha"].ToString())).ToString("yyyy/MM/dd"))
+        </div>
+        <div class="row">
+            @foreach (var item in ViewData["list"] as List<string>)
+            {
+                <span>
+                    @item
+                </span>
+            }
+        </div>
+    </div>
+</div>

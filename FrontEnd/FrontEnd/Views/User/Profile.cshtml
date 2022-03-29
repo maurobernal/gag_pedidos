@@ -1,0 +1,27 @@
+﻿@using FrontEnd.Models;
+@model UserModel
+
+<div class="container">
+
+    <h1> Perfil de Usuario</h1>
+    @if(Model != null)
+    {
+        <div class="row">
+            @Model.Name @Model.Surname
+        </div>
+        <div class="row">
+            @Model.FechaNac.ToShortDateString()
+        </div>
+        <div class="row">
+            @Model.Id @Model.Legajo
+        </div>
+        @Html.ActionLink("Editar", "Edit", "User", new { id = Model.Id })
+    } 
+    else
+    {
+        <div>
+            No existe el dato
+        </div>
+    }
+</div>
+

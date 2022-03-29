@@ -1,0 +1,45 @@
+﻿@*@(
+    Html.Kendo()
+    .TextBox()
+    .Name("Tbx")
+    .Value("Mi primer textbox")
+    .Rounded(Rounded.Full)
+    )
+
+    @(
+    Html.Kendo()
+    .Button()
+    .Content("Click")
+    .Name("Click")
+    )*@
+@*<input type="text" value="Mi primer textbox" />*@
+
+@(Html.Kendo().DropDownList()
+          .Name("color")
+          .DataTextField("Text")
+          .DataValueField("Value")
+          .BindTo(new List<SelectListItem>() {
+              new SelectListItem() {
+                  Text = "Black",
+                  Value = "1"
+              },
+              new SelectListItem() {
+                  Text = "Orange",
+                  Value = "2"
+              },
+              new SelectListItem() {
+                  Text = "Grey",
+                  Value = "3"
+              }
+          })
+          .OptionLabel("Seleccione un Color")
+          .Events( e => {
+              e.Open("Open");
+              e.Change("Change");
+              e.DataBound("DataBound");
+          })
+          .HtmlAttributes(new { style = "width: 100%" })
+    )
+
+
+<script src="~/js/kendo.js"></script>
