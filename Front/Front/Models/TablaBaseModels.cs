@@ -1,9 +1,9 @@
-﻿namespace WebAPI.DTOs
+﻿namespace Front.Models
 {
-    public class TipoDeProductoDTO
+    public class TablaBaseModels
     {
-        public int Id { get; set; }
 
+        public int id { get; set; }
         public string Descripcion { get; set; }
 
         public bool Habilitado { get; set; }

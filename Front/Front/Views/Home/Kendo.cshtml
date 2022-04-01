@@ -1,22 +1,9 @@
 ﻿ @(Html.Kendo().DropDownList()
           .Name("color")
-          .DataTextField("Text")
-          .DataValueField("Value")
+          .DataTextField("name")
+          .DataValueField("url")
           .Events(e => e.Change("change"))
-          .BindTo(new List<SelectListItem>() {
-              new SelectListItem() {
-                  Text = "Black",
-                  Value = "1"
-              },
-              new SelectListItem() {
-                  Text = "Orange",
-                  Value = "2"
-              },
-              new SelectListItem() {
-                  Text = "Grey",
-                  Value = "3"
-              }
-          })
+          .DataSource(d => d.Read(r => r.Action("GetPokemon","Home")))
           .Events(e => e.Open("Open"))
           .Events(e => e.Change("Change"))
           .Events(e => e.DataBound("DataBound"))
@@ -24,7 +11,12 @@
           .HtmlAttributes(new { style = "width: 100%" })
     )
 
-@(Html.Kendo()
+
+@(Html.Kendo().Button().Name("Btn").Content("Cargar").Events(e => e.Click("Cargar")))
+
+
+@(Html.Kendo().DatePicker().Name("DatePicker"))
+@*@(Html.Kendo()
 .TextBox()
 .Name("Tbx")
 .Value("Mi primer textbox")
@@ -33,6 +25,6 @@
 @Html.Kendo().Button().Content("Clic").Name("Button").Events(e => e.Click("Click"))
 <input type="text" value="mi primer textbox"/>
 
-<button>Clic</button>
+<button>Clic</button>*@
 
 <script src="~/js/kendo.js"></script>

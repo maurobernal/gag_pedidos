@@ -1,4 +1,7 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Front.Interfaces;
+using Front.Services;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
@@ -8,6 +11,18 @@ builder.Services.AddControllersWithViews()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());
 // Add Kendo UI services to the services container"
 builder.Services.AddKendo();
+builder.Services.AddHttpClient("PokeAPI", c => {
+    c.BaseAddress= new Uri ("https://pokeapi.co/api/v2/pokemon/");
+    //c.DefaultRequestHeaders.Add("content-type","application-json");
+    //c.DefaultRequestHeaders.Add("Authentication", "Bearer 6434534545");
+});
+
+builder.Services.AddHttpClient("Backend", c => {c.BaseAddress = new Uri("https://localhost:7244/");});
+
+builder.Services.AddTransient<IPokemonService, PokemonService>();
+builder.Services.AddTransient<IOrigenService, OrigenService>();
+builder.Services.AddTransient<IProductoService, ProductoService>();
+builder.Services.AddTransient<ITipoDeProductoService, TipoDeProductoService>();
 
 var app = builder.Build();
 

@@ -35,6 +35,7 @@ public class OrigenService : IOrigenService
         if (entidad == null) return false;
 
         entidad.Descripcion = origen.Descripcion;
+        entidad.Habilitado = origen.Habilitado;
 
         _conexion.SaveChanges();
         return true;

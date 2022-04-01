@@ -1,0 +1,38 @@
+﻿@using Front.Models
+
+
+@(Html.Kendo().Grid<TipoDeProductoModels>().Name("Grilla")
+         .ToolBar(t=>{
+            t.Create();
+        })
+       .Selectable()
+       .Filterable()
+       .Editable(GridEditMode.InLine)
+       .DataSource(dataSource => dataSource.Ajax()
+                    .Read("GetAllTipoDeProducto", "API")
+                    .Create("AddTipoDeProducto","API")
+                    .Update("EditTipoDeProducto","API")
+                    .Destroy("DeleteTipoDeProducto","API")
+                    .Model(m=>{
+                        m.Id(p=>p.id);
+                        m.Field(p=>p.id).Editable(false);
+                        m.Field(p=>p.Descripcion).DefaultValue("Descripcion:");
+                        m.Field(p=>p.Habilitado).Editable(false);
+                    })
+                    
+         )
+         .Columns( c=> {
+             
+             c.Bound(m=>m.id).Filterable(false);
+             c.Bound(m=>m.Descripcion);
+             c.Bound(m=>m.Habilitado);
+             c.Command(command => command.Edit()).Width(120);
+             c.Command(command => command.Destroy()).Width(120);
+            
+
+         })
+
+
+     
+
+)

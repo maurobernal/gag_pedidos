@@ -11,4 +11,7 @@ function Change(e) {
 function DataBound(e) {
     console.info("DataBound");
 }
+function Cargar(e) {
+    $("#color").data("kendoDropDownList").dataSource.read();
+}
 //# sourceMappingURL=kendo.js.map

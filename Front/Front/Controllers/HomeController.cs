@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Front.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,20 @@ namespace Front.Controllers
 {
     public class HomeController : Controller
     {
+
+        private IPokemonService _pokemonService;
+
+        public HomeController(IPokemonService pokemonService)
+        => _pokemonService = pokemonService;
+
+
+        public async Task<IActionResult> GetPokemon()
+        => Json(await _pokemonService.GetPokemonList());
+
+        public async Task<IActionResult> GetPokemonDetails(int ID)
+      => Json(await _pokemonService.GetPokemonDetails(ID));
+
+
         public IActionResult Index()
         {
             return View();
@@ -79,6 +95,33 @@ namespace Front.Controllers
         public IActionResult Kendo()
         {
             return View();
+        }
+
+        public IActionResult GetItems()
+        {
+            var Datos = new List<SelectListItem>();
+
+
+            Datos.Add(new SelectListItem() {
+                Text = "Black",
+                Value = "1"
+            });
+
+            Datos.Add(new SelectListItem()
+            {
+                Text = "Orange",
+                Value = "2"
+            });
+            Datos.Add(new SelectListItem()
+            {
+                Text = "Grey",
+                Value = "3"
+            });
+
+
+            return Json(Datos);
+
+
         }
     }
 }

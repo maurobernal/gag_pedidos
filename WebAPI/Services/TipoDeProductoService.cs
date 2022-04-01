@@ -17,7 +17,7 @@ public class TipoDeProductoService : ITipoDeProductoService
     }
     public int AddTipoDeProducto(TipoDeProductoDTO tipoDeProducto)
     {
-        var O = _mapper.Map<Producto>(tipoDeProducto);
+        var O = _mapper.Map <TipoDeProducto>(tipoDeProducto);
         _conexion.Add(O);
 
         _conexion.SaveChanges();
@@ -30,9 +30,8 @@ public class TipoDeProductoService : ITipoDeProductoService
         var entidad = _conexion.TipoDeProductos.Where(o => o.Id == tipoDeProducto.Id).FirstOrDefault();
         if (entidad == null) return false;
 
-        var O = _mapper.Map<Producto>(tipoDeProducto);
-        _conexion.Add(O);
-
+        var O = _mapper.Map<TipoDeProducto>(tipoDeProducto);
+        _conexion.Update(O);
         _conexion.SaveChanges();
         return true;
     }
@@ -54,7 +53,7 @@ public class TipoDeProductoService : ITipoDeProductoService
 
     public List<TipoDeProductoDTO> SelectListTipoDeProducto() 
     {
-        var List_O = _conexion.Origenes.Where(o => o.Habilitado == true).ToList();
+        var List_O = _conexion.TipoDeProductos.Where(o => o.Habilitado == true).ToList();
 
         return _mapper.Map<List<TipoDeProductoDTO>>(List_O);
 

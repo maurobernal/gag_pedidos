@@ -1,0 +1,60 @@
+﻿@using Front.Models
+
+
+@(Html.Kendo().Grid<OrigenModels>().Name("Grilla")
+         .ToolBar(t=>{
+            t.Create();
+        })
+       .Selectable()
+       .Filterable()
+       .Editable(GridEditMode.InLine)
+       .DataSource(dataSource => dataSource.Ajax()
+                    .Read("GetAllOrigen", "API")
+                    .Create("AddOrigen","API")
+                    .Update("EditOrigen","API")
+                    .Destroy("DeleteOrigen","API")
+                    .Model(m=>{
+                        m.Id(p=>p.id);
+                        m.Field(p=>p.id).Editable(false);
+                        m.Field(p=>p.Descripcion).DefaultValue("Descripcion:");
+                        m.Field(p=>p.Habilitado);
+                    })
+                    
+         )
+         .Columns( c=> {
+
+         @*    c.Bound(m=>m.id).Title("ID").Filterable(false).Width(20).ClientTemplate("<div class='text-danger'>#= id # </div>");
+             c.Bound(m=>m.Descripcion).ClientTemplate("id");*@
+             
+             c.Bound(m=>m.id).Filterable(false);
+             c.Bound(m=>m.Descripcion);
+             c.Bound(m=>m.Habilitado);
+             c.Command(command => command.Edit()).Width(120);
+             c.Command(command => command.Destroy()).Width(120);
+            
+
+         })
+
+
+     
+
+)
+
+
+
+
+@* @(Html.Kendo().DropDownList()
+          .Name("lista")
+          .DataTextField("Descripcion")
+          .DataValueField("id")
+          .DataSource(d => d.Read(r => r.Action("GetAllOrigen","Api")))       
+          .HtmlAttributes(new { style = "width: 100%" })
+    )
+
+
+
+
+ @(Html.Kendo().Button().Name("Btn").Content("Editar").Events(e => e.Click("Edit")) )
+*@
+
+<script src="~/js/crud.js"></script>

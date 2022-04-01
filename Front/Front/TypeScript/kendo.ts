@@ -18,3 +18,9 @@ function Change(e: Event) {
 function DataBound(e: Event) {
     console.info("DataBound");
 }
+
+
+
+function Cargar(e: Event) {
+    $("#color").data("kendoDropDownList").dataSource.read();
+}

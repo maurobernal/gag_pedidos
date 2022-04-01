@@ -3,6 +3,7 @@ using WebAPI.DTOs;
 using WebAPI.Infrastructure;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebAPI.Services;
 
@@ -27,12 +28,12 @@ public class ProductoService : IProductoService
     public bool UpdateProducto(ProductoDTO producto)
     {
 
-        var entidad = _conexion.Productos.Where(o => o.Id == producto.Id).FirstOrDefault();
+        var entidad = _conexion.Productos.Where(o => o.Id == producto.Id).AsNoTracking().FirstOrDefault();
         if (entidad == null) return false;
 
         var O = _mapper.Map<Producto>(producto);
-
-        _conexion.Add(O);
+        
+        _conexion.Update(O);
         _conexion.SaveChanges();
         return true;
     }
@@ -54,7 +55,7 @@ public class ProductoService : IProductoService
     public List<ProductoDTO> SelectListProducto() 
     {
 
-        var List_O = _conexion.Origenes.Where(o => o.Habilitado == true).ToList();
+        var List_O = _conexion.Productos.Where(o => o.Habilitado == true).ToList();
 
         return _mapper.Map<List<ProductoDTO>>(List_O);
     }
