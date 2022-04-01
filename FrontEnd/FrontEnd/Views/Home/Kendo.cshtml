@@ -1,5 +1,6 @@
-﻿@*@(
-    Html.Kendo()
+﻿@using FrontEnd.Models;
+@*@(
+    Html.Kendo(s
     .TextBox()
     .Name("Tbx")
     .Value("Mi primer textbox")
@@ -14,32 +15,80 @@
     )*@
 @*<input type="text" value="Mi primer textbox" />*@
 
+@(Html.Kendo().Grid<ProductModel>().Name("Grilla")
+        
+        .Pageable()
+        .Scrollable()
+        .Height(500)
+        .Groupable()
+        .Mobile()
+        .Editable(GridEditMode.PopUp)
+        .Selectable(s=>s.Mode(GridSelectionMode.Multiple))
+        .DataSource(dataSource => dataSource.Ajax()
+                    .Read("Grilla_Read", "Home")
+                    .Create("Grila_Create","Home")
+                    .Update("Grilla_Update","Home")
+                    .Destroy("","")
+         )
+        .ToolBar(t=>{
+            t.Excel();
+            t.Pdf();
+            t.Create();
+            t.Custom().Text("Mas").IconClass("add");
+        })
+        .Excel(e=>e.FileName("Grilla.xlsx"))
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @(Html.Kendo().DropDownList()
           .Name("color")
-          .DataTextField("Text")
-          .DataValueField("Value")
-          .BindTo(new List<SelectListItem>() {
-              new SelectListItem() {
-                  Text = "Black",
-                  Value = "1"
-              },
-              new SelectListItem() {
-                  Text = "Orange",
-                  Value = "2"
-              },
-              new SelectListItem() {
-                  Text = "Grey",
-                  Value = "3"
-              }
-          })
+          .DataTextField("name")
+          .DataValueField("url")
           .OptionLabel("Seleccione un Color")
+          .DataSource(d=>d.Read(r => r.Action("GetPokemon", "Home")))
           .Events( e => {
               e.Open("Open");
               e.Change("Change");
               e.DataBound("DataBound");
           })
-          .HtmlAttributes(new { style = "width: 100%" })
+          .HtmlAttributes(new { style = "width: 50%" })
     )
+
+@(
+     Html.Kendo().Button()
+            .Name("Btn")
+            .Content("Cargar")
+            .Events(e=>e.Click("Cargar"))
+)
+
+@Html.Kendo().DatePicker().Name("DatePicker").HtmlAttributes(new { style = "width: 20%" })
 
 
 <script src="~/js/kendo.js"></script>

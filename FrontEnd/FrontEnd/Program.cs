@@ -1,4 +1,7 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using FrontEnd.Interfaces;
+using FrontEnd.Services;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
@@ -8,6 +11,13 @@ builder.Services.AddControllersWithViews()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());
 // Add Kendo UI services to the services container"
 builder.Services.AddKendo();
+builder.Services.AddHttpClient("PokeApi", c => c.BaseAddress = new Uri("https://pokeapi.co/api/v2/pokemon/"));
+builder.Services.AddTransient<IPokemonService, PokemonService>();
+
+builder.Services.AddHttpClient("Backend", c => c.BaseAddress = new Uri("https://localhost:7244/"));
+builder.Services.AddTransient<IOriginService, OriginService>();
+builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<IProductTypeService, ProductTypeService>();
 
 var app = builder.Build();
 

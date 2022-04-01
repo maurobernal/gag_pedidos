@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebAPI.DTOs;
-using WebAPI.Services;
+using WebAPI.Interface;
 
 namespace WebAPI.Controllers;
 
@@ -8,12 +8,13 @@ namespace WebAPI.Controllers;
 [Route("[controller]")]
 public class OriginController : Controller  
 {
-    private OriginService _originService;
+    private IOriginService _originService;
 
-    public OriginController()
+    public OriginController(IOriginService originService)
     {
-        _originService = new();
+        _originService = originService;
     }
+
     [HttpPost]
     public IActionResult Create([FromBody] OriginDTO origin)
     {

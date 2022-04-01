@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebAPI.Entities;
-using WebAPI.Services;
+using WebAPI.DTOs;
+using WebAPI.Interface;
 
 namespace WebAPI.Controllers;
 
@@ -8,36 +8,36 @@ namespace WebAPI.Controllers;
 [Route("[controller]")]
 public class ProductController : Controller
 {
-    private ProductService _productService;
+    private IProductService _productService;
 
-    public ProductController()
+    public ProductController(IProductService productService)
     {
-        _productService = new();
+        _productService = productService;
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] Product product)
+    public IActionResult Create([FromBody] ProductDTO product)
     {
         var res = _productService.AddProduct(product);
         return Ok(res);
     }
 
-    [HttpPut("id")]
-    public IActionResult Update(Product product, int id)
+    [HttpPut("{id}")]
+    public IActionResult Update(ProductDTO product, int id)
     {
         if (id != product.id) return BadRequest();
         var res = _productService.UpdateProduct(product);
         return Ok(res);
     }
 
-    [HttpDelete("id")]
+    [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
         var res = _productService.DeleteProduct(id);
         return Ok(res);
     }
 
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     public IActionResult ListOne(int id)
     {
         var res = _productService.SelectProduct(id);

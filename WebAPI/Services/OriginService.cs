@@ -1,40 +1,44 @@
 ﻿using WebAPI.DTOs;
 using WebAPI.Entities;
 using WebAPI.InfraStructure;
+using WebAPI.Interface;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebAPI.Services;
 
-public class OriginService
+public class OriginService : IOriginService
 {
     private readonly AppDBContext _conection;
+    private readonly IMapper _mapper;
 
-    public OriginService()
+    public OriginService(IMapper mapper)
     {
         _conection = new AppDBContext();
+        _mapper = mapper;
     }
-    public int AddOrigin(OriginDTO origin)
+    public OriginDTO AddOrigin(OriginDTO origin)
     {
-        Origin O = new Origin();   
-        O.Description = origin.Description;
-        O.Active = true;
 
-        _conection.Origins.Add(O);
+        var O = _mapper.Map<Origin>(origin);
+
+        _conection.Add(O);
         _conection.SaveChanges();
 
-        return O.id;
+        return _mapper.Map<OriginDTO>(O);
     }
 
-    public bool UpdateOrigin(OriginDTO origin)
-    {   
-  
-        var entity = _conection.Origins.Where(o => o.id == origin.id).FirstOrDefault();
-        if (entity == null) return false;
+    public OriginDTO UpdateOrigin(OriginDTO origin)
+    {
 
-        entity.Description = origin.Description;
+        var entity = _conection.Origins.Where(o => o.id == origin.id).AsNoTracking().FirstOrDefault();
+        if (entity == null) throw new Exception();
 
+        entity = _mapper.Map<Origin>(origin);
+        _conection.Origins.Update(entity);
         _conection.SaveChanges();
 
-        return true;
+        return _mapper.Map<OriginDTO>(entity);
     }
 
     public bool DeleteOrigin(int ID)
@@ -49,9 +53,9 @@ public class OriginService
 
     }
 
-    public Origin SelectOrigin(int ID) => _conection.Origins.FirstOrDefault(o => o.id == ID && o.Active);
+    public OriginDTO SelectOrigin(int ID) => _mapper.Map<OriginDTO>(_conection.Origins.FirstOrDefault(o => o.id == ID && o.Active));
 
 
-    public List<Origin> SelectListOrigin() => _conection.Origins.Where(o => o.Active == true).ToList();
+    public List<OriginDTO> SelectListOrigin() => _mapper.Map<List<OriginDTO>>( _conection.Origins.Where(o => o.Active == true).ToList());
 
 }

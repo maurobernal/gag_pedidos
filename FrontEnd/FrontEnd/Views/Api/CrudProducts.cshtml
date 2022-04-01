@@ -1,0 +1,36 @@
+﻿@using FrontEnd.Models;
+
+<h1>Products</h1>
+@(Html.Kendo().Grid<ProductModel>().Name("Grid_Products")
+    .Pageable()
+    .Sortable()
+    .Editable(GridEditMode.PopUp)
+    .DataSource(dataSource => dataSource.Ajax()
+                .Read("Grid_Read_Products", "api")
+                .Create("Grid_Create_Products","Api")
+                .Update("Grid_Update_Products","Api")
+                .Destroy("Grid_Delete_Products","Api")
+    .Model(m => {
+        m.Id(p=>p.Id);
+        m.Field(p=>p.Id).DefaultValue(0).Editable(false);
+        m.Field(p=>p.Description).DefaultValue("");
+    })
+    )
+    .Columns( c=> {
+
+         @*    c.Bound(m=>m.id).Title("ID").Filterable(false).Width(20).ClientTemplate("<div class='text-danger'>#= id # </div>");
+             c.Bound(m=>m.Descripcion).ClientTemplate("id");*@
+
+             c.Bound(m=>m.Id);
+             c.Bound(m=>m.Description);
+             c.Bound(m=>m.Active);
+             c.Command(c => c.Edit()).Width(120);
+             c.Command(c => c.Destroy()).Width(120);
+
+         })
+    .ToolBar(t=>{
+        t.Create();
+    })
+
+)
+<script src="~/js/kendo.js"></script>

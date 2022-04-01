@@ -1,5 +1,7 @@
 using WebAPI.InfraStructure;
 using Microsoft.EntityFrameworkCore;
+using WebAPI.Interface;
+using WebAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDBContext>(o => o.UseSqlServer("Data Source=172.0.0.15;Initial Catalog=EF1;User=maxi;password=maxi1"));
+
+builder.Services.AddTransient<IOriginService, OriginService>();
+builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<IProductTypeService, ProductTypeService>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

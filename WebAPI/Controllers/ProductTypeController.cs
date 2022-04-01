@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebAPI.Entities;
-using WebAPI.Services;
+using WebAPI.DTOs;
+using WebAPI.Interface;
 
 namespace WebAPI.Controllers;
 
@@ -8,22 +8,22 @@ namespace WebAPI.Controllers;
 [Route("[controller]")]
 public class ProductTypeController : Controller
 {
-    private ProductTypeService _productTypeService;
+    private IProductTypeService _productTypeService;
 
-    public ProductTypeController()
+    public ProductTypeController(IProductTypeService productTypeService)
     {
-        _productTypeService = new();
+        _productTypeService = productTypeService;
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] ProductType productType)
+    public IActionResult Create([FromBody] ProductTypeDTO productType)
     {
         var res = _productTypeService.AddProductType(productType);
         return Ok(res);
     }
 
     [HttpPut("id")]
-    public IActionResult Update(ProductType productType, int id)
+    public IActionResult Update(ProductTypeDTO productType, int id)
     {
         if (id != productType.id) return BadRequest();
         var res = _productTypeService.UpdateProductType(productType);

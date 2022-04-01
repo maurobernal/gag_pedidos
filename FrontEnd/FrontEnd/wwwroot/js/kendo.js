@@ -2,6 +2,9 @@ function Click() {
     alert($("#Tbx").data("kendoTextBox").value());
     $("#Button").data("kendoButton").enable(false);
 }
+function Cargar() {
+    $("#color").data("kendoDropDownList").dataSource.read();
+}
 function Open(e) {
     console.info("Open");
 }

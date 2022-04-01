@@ -1,32 +1,37 @@
-﻿using WebAPI.Entities;
+﻿using AutoMapper;
+using WebAPI.DTOs;
 using WebAPI.InfraStructure;
+using WebAPI.Interface;
+using WebAPI.Entities;
 
 namespace WebAPI.Services;
 
-public class ProductTypeService
+public class ProductTypeService : IProductTypeService
 {
     private readonly AppDBContext _conection;
-
-    public ProductTypeService()
+    private readonly IMapper _mapper;
+    public ProductTypeService(IMapper mapper)
     {
         _conection = new AppDBContext();
+        _mapper = mapper;
     }
 
-    public int AddProductType(ProductType product_type)
+    public int AddProductType(ProductTypeDTO product_type)
     {
-        _conection.ProductsTypes.Add(product_type);
+        var P = _mapper.Map<ProductType>(product_type);
+
+        _conection.Add(P);
         _conection.SaveChanges();
         return product_type.id;
     }
 
-    public bool UpdateProductType(ProductType product_type)
+    public bool UpdateProductType(ProductTypeDTO product_type)
     {
 
         var entity = _conection.ProductsTypes.Where(o => o.id == product_type.id).FirstOrDefault();
         if (entity == null) return false;
 
-        entity.Description = product_type.Description;
-        entity.Active = product_type.Active;
+        entity = _mapper.Map<ProductType>(product_type);
 
         _conection.SaveChanges();
 
@@ -40,14 +45,14 @@ public class ProductTypeService
 
         _conection.ProductsTypes.Remove(entity);
         _conection.SaveChanges();
-        
+
         return true;
 
     }
 
-    public ProductType SelectProductType(int ID) => _conection.ProductsTypes.FirstOrDefault(o => o.id == ID && o.Active);
+    public ProductTypeDTO SelectProductType(int ID) => _mapper.Map<ProductTypeDTO>(_conection.ProductsTypes.FirstOrDefault(o => o.id == ID && o.Active));
 
 
-    public List<ProductType> SelectListProductType() => _conection.ProductsTypes.Where(o => o.Active == true).ToList();
+    public List<ProductTypeDTO> SelectListProductType() => _mapper.Map<List<ProductTypeDTO>>(_conection.ProductsTypes.Where(o => o.Active == true).ToList());
 
 }

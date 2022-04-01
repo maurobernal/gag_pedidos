@@ -3,6 +3,10 @@
     $("#Button").data("kendoButton").enable(false);
 }
 
+function Cargar() {
+    $("#color").data("kendoDropDownList").dataSource.read();
+}
+
 function Open(e: Event) {
     console.info("Open");
 }
