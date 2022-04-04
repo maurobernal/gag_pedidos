@@ -2,7 +2,8 @@
 //password: joaquin1
 using WebAPI.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-
+using WebAPI.Services;
+using WebAPI.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDBContext>(o => o.UseSqlServer("Data Source=172.0.0.15;Initial Catalog=EF2;User=joaquin;password=joaquin1"));
+builder.Services.AddTransient<IOrigenService, OrigenService>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

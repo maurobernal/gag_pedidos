@@ -6,6 +6,5 @@ public class Origen: TablaBase
     {
 
     
-    public int indice { get; set; }
 }
 
