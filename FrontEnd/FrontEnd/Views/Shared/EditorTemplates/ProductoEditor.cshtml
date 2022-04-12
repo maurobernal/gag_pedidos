@@ -1,0 +1,11 @@
+﻿@using FrontEnd.Models
+@model ProductModel
+
+@(Html.Kendo().DropDownListFor(m => m)
+       
+          .DataTextField("Description")
+          .DataValueField("Id")
+          .DataSource(source => source
+              .Read(read => read.Url(Url.Action("GetAllProducts", "Api" )))
+           )
+    )

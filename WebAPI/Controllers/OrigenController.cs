@@ -22,7 +22,7 @@ public class OriginController : Controller
         return Ok(res);
     }
 
-    [HttpPut("id")]
+    [HttpPut("{id}")]
     public IActionResult Update(OriginDTO origin, int id)
     {
         if (id != origin.id) return BadRequest();
@@ -30,14 +30,14 @@ public class OriginController : Controller
         return Ok(res);
     }
 
-    [HttpDelete("id")]
+    [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
         var res = _originService.DeleteOrigin(id);
         return Ok(res);
     }
 
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     public IActionResult ListOne(int id)
     {
         var res = _originService.SelectOrigin(id);
@@ -46,9 +46,9 @@ public class OriginController : Controller
     }
 
     [HttpGet("List")]
-    public IActionResult ListAll()
+    public IActionResult ListAll(string option="T")
     {
-        var res = _originService.SelectListOrigin();
+        var res = _originService.SelectListOrigin(option);
         return Ok(res);
     }
 }

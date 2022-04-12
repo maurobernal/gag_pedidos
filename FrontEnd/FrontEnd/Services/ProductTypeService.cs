@@ -7,9 +7,19 @@ public class ProductTypeService : IProductTypeService
     private IHttpClientFactory _httpClientFactory;
     public ProductTypeService(IHttpClientFactory httpClientFactory) => _httpClientFactory = httpClientFactory;
 
-    public Task<ProductTypeModel> Delete(int id)
+    public async Task<ProductTypeModel> Add(ProductTypeModel productTypeModel)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("Backend");
+        var response = await client.PostAsJsonAsync("ProductType", productTypeModel);
+
+        return await response.Content.ReadFromJsonAsync<ProductTypeModel>();
+    }
+
+    public async Task Delete(int id)
+    {
+        var client = _httpClientFactory.CreateClient("Backend");
+        var res = await client.DeleteAsync($"ProductType/{id}");
+        string response = await res.Content.ReadAsStringAsync();
     }
 
     public async Task<ProductTypeModel> Get(int id)
@@ -19,16 +29,28 @@ public class ProductTypeService : IProductTypeService
         return await client.GetFromJsonAsync<ProductTypeModel>($"ProductType/{id}");
     }
 
-    public async Task<List<ProductTypeModel>> GetAll()
+    public async Task<List<ProductTypeModel>> GetAll(string option)
     {
         var client = _httpClientFactory.CreateClient("Backend");
 
-        return await client.GetFromJsonAsync<List<ProductTypeModel>>("ProductType/List");
+        return await client.GetFromJsonAsync<List<ProductTypeModel>>($"ProductType/List?option={option}");
     }
 
-    public Task<ProductTypeModel> Update(ProductTypeModel productModel)
+    public async Task<ProductTypeModel> Update(ProductTypeModel productTypeModel)
     {
-        throw new NotImplementedException();
+        var client = _httpClientFactory.CreateClient("Backend");
+        var response = await client.PutAsJsonAsync($"ProductType/{productTypeModel.Id}", productTypeModel);
+        if (((int)response.StatusCode) == 200)
+        {
+
+            //string cadena=(await response.Content.ReadAsStringAsync());   
+            //var file = await response.Content.ReadAsStreamAsync(); 
+            //ProductModel P = await response.Content.ReadFromJsonAsync<ProductModel>();
+
+            return (await response.Content.ReadFromJsonAsync<ProductTypeModel>());
+        }
+
+        throw new Exception();
     }
 }
 

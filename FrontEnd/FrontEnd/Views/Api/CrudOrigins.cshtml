@@ -1,12 +1,40 @@
 ﻿@using FrontEnd.Models;
 
 <h1>Origins</h1>
-@(Html.Kendo().Grid<ProductModel>().Name("Grid_Origins")
+
+@(Html.Kendo().DropDownList()
+          .Name("filter")
+          .Events(e => e.Close("readGrid"))
+          .DataTextField("Text")
+          .DataValueField("Value")
+          .BindTo(
+            new List<SelectListItem>() {
+                new SelectListItem()
+                {
+                    Text = "Todos",
+                    Value = "T"
+                },
+                new SelectListItem()
+                {
+                    Text = "Habilitados",
+                    Value = "H"
+                },
+                new SelectListItem()
+                {
+                    Text = "No Habilitados",
+                    Value = "NH"
+                }
+            }
+          )
+)
+
+@(Html.Kendo().Grid<OriginModel>().Name("Grid")
     .Pageable()
     .Sortable()
     .Editable(GridEditMode.PopUp)
+    .AutoBind(false)
     .DataSource(dataSource => dataSource.Ajax()
-                .Read("Grid_Read_Origin", "api")
+                .Read(read => read.Url(Url.Action("Grid_Read_Origin", "api" )).Data("Getddl"))
                 .Create("Grid_Create_Origin","Api")
                 .Update("Grid_Update_Origin","Api")
                 .Destroy("Grid_Delete_Origin","Api")
@@ -14,23 +42,17 @@
         m.Id(p=>p.Id);
         m.Field(p=>p.Id).DefaultValue(0).Editable(false);
         m.Field(p=>p.Description).DefaultValue("");
-    })
-    )
+    }))
+
     .Columns( c=> {
-
-         @*    c.Bound(m=>m.id).Title("ID").Filterable(false).Width(20).ClientTemplate("<div class='text-danger'>#= id # </div>");
-             c.Bound(m=>m.Descripcion).ClientTemplate("id");*@
-
-             c.Bound(m=>m.Id);
-             c.Bound(m=>m.Description);
-             c.Bound(m=>m.Active);
-             c.Command(c => c.Edit()).Width(120);
-             c.Command(c => c.Destroy()).Width(120);
-
-         })
-    .ToolBar(t=>{
+        c.Bound(m=>m.Id);
+        c.Bound(m=>m.Description);
+        c.Command(c=> c.Edit()).Width(120);
+        c.Command(c=> c.Destroy()).Width(120);
+    })
+    .ToolBar( t => {
         t.Create();
     })
-
 )
-<script src="~/js/kendo.js"></script>
+<script src="~/js/crud.js"></script>
+

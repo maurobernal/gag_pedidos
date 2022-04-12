@@ -55,7 +55,20 @@ public class OriginService : IOriginService
 
     public OriginDTO SelectOrigin(int ID) => _mapper.Map<OriginDTO>(_conection.Origins.FirstOrDefault(o => o.id == ID && o.Active));
 
+    public List<OriginDTO> SelectListOrigin(string option)
+    {
+        List<Origin> list = new List<Origin>();
 
-    public List<OriginDTO> SelectListOrigin() => _mapper.Map<List<OriginDTO>>( _conection.Origins.Where(o => o.Active == true).ToList());
+        list = _conection.Origins
+            .Where(w =>
+                (option == "T") ||
+                (option == "H" && w.Active == true) ||
+                (option == "NH" && w.Active == false)
+            )
+            .ToList();
+        return _mapper.Map<List<OriginDTO>>(list);
+
+
+    }
 
 }

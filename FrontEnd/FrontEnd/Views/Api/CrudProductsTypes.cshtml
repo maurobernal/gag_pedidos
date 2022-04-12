@@ -1,5 +1,58 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using FrontEnd.Models;
+
+<h1>Products Type</h1>
+
+@(Html.Kendo().DropDownList()
+          .Name("filter")
+          .Events(e => e.Close("readGrid"))
+          .DataTextField("Text")
+          .DataValueField("Value")
+          .BindTo(
+            new List<SelectListItem>() {
+                new SelectListItem()
+                {
+                    Text = "Todos",
+                    Value = "T"
+                },
+                new SelectListItem()
+                {
+                    Text = "Habilitados",
+                    Value = "H"
+                },
+                new SelectListItem()
+                {
+                    Text = "No Habilitados",
+                    Value = "NH"
+                }
+            }
+          )
+)
+
+@(Html.Kendo().Grid<ProductTypeModel>().Name("Grid")
+    .Pageable()
+    .Sortable()
+    .Editable(GridEditMode.PopUp)
+    .AutoBind(false)
+    .DataSource(dataSource => dataSource.Ajax()
+                .Read(read => read.Url(Url.Action("Grid_Read_ProductType", "api" )).Data("Getddl"))
+                .Create("Grid_Create_ProductType","Api")
+                .Update("Grid_Update_ProductType","Api")
+                .Destroy("Grid_Delete_ProductType","Api")
+    .Model(m => {
+        m.Id(p=>p.Id);
+        m.Field(p=>p.Id).DefaultValue(0).Editable(false);
+        m.Field(p=>p.Description).DefaultValue("");
+    }))
+
+    .Columns( c=> {
+        c.Bound(m=>m.Id);
+        c.Bound(m=>m.Description);
+        c.Command(c=> c.Edit()).Width(120);
+        c.Command(c=> c.Destroy()).Width(120);
+    })
+    .ToolBar( t => {
+        t.Create();
+    })
+)
+<script src="~/js/crud.js"></script>
+

@@ -1,0 +1,84 @@
+﻿@using FrontEnd.Models;
+
+<script src="~/js/crud.js"></script>
+
+<div class="row">
+    <div class="col col-10 ">
+        @(Html.Kendo().DropDownList()
+        .Name("filter")
+        .Events(e => e.Close("readGrid"))
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .BindTo(
+        new List<DropdownlistOption>() {
+        new DropdownlistOption()
+        {
+        Text = "Nuevo",
+        Value = 0
+        },
+        new DropdownlistOption()
+        {
+        Text = "Pendiente",
+        Value = 1
+        },
+        new DropdownlistOption()
+        {
+        Text = "Aprobado",
+        Value = 2
+        },
+        new DropdownlistOption()
+        {
+        Text = "Rechazado",
+        Value = 3
+        }
+        }
+        )
+        )
+    </div>
+    <div class="col col-2 pb-4">
+        @(Html.Kendo().Button()
+        .Name("NewOrder")
+        .IconClass("k-icon k-i-plus")
+        .Content("Nuevo Pedido")
+        .Events(e=>e.Click("onClick"))
+        )
+    </div>
+</div>
+
+@(Html.Kendo().Grid<OrderModel>()
+    .Name("Grid")
+    .DataSource(dataSource => dataSource.Ajax()
+    .Read(r=>r.Action("Grid_Read_Order", "api").Data("Getddl"))
+    .Create("Grid_Create_Order","API")
+    .Update("Grid_Update_Order","API")
+    .Destroy("Grid_Delete_Order","API")
+    .Model(m=>{
+        m.Id(p=>p.Id);
+        m.Field(p=>p.Id);
+        m.Field(p=>p.State);
+        m.Field(d=>d.Date);
+    }))
+    .Columns( c=> {
+
+    @*c.Bound(m=>m.Id);*@
+        c.Bound(m=>m.State).ClientTemplate(
+            "<div class='text-#: (State == 0) ? 'secondary' : (State == 1) ? 'primary' : (State == 2) ? 'success' : 'danger' #'>#: (State == 0) ? 'Nuevo' : (State == 1) ? 'Pendiente' : (State == 2) ? 'Aprobado' : 'Rechazado' #</div>"
+        ).Title("Estado del Pedido");
+        c.Bound(m=>m.Date).Format("{0: dd/MM/yyyy HH:mm:ss}").Title("Fecha y Hora de Creación");
+        c.Bound(m=>m.Id).ClientTemplateId("Edit").Title(" ").Width(120);
+        c.Command(command => command.Destroy()).Width(120);
+    })
+)
+
+<script id="Edit" type="text/x-kendo-template">
+
+    <a
+        class="k-button k-button-md k-button-rectangle k-rounded-md k-button-solid k-button-solid-base"
+        href="/api/OrderDetail?orderId=#:Id#"
+    >
+        <span class="k-icon k-i-hyperlink-open k-button-icon"></span>
+        Editar
+    </a>
+
+
+</script>

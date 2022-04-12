@@ -16,6 +16,8 @@ builder.Services.AddDbContext<AppDBContext>(o => o.UseSqlServer("Data Source=172
 builder.Services.AddTransient<IOriginService, OriginService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IProductTypeService, ProductTypeService>();
+builder.Services.AddTransient<IOrderService, OrderService>();
+builder.Services.AddTransient<IOrderDetailService, OrderDetailService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

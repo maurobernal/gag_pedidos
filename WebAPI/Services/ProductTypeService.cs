@@ -53,6 +53,17 @@ public class ProductTypeService : IProductTypeService
     public ProductTypeDTO SelectProductType(int ID) => _mapper.Map<ProductTypeDTO>(_conection.ProductsTypes.FirstOrDefault(o => o.id == ID && o.Active));
 
 
-    public List<ProductTypeDTO> SelectListProductType() => _mapper.Map<List<ProductTypeDTO>>(_conection.ProductsTypes.Where(o => o.Active == true).ToList());
+    public List<ProductTypeDTO> SelectListProductType(string option)
+    {
+        List<ProductType> list = new List<ProductType>();
+
+        list = _conection.ProductsTypes
+                .Where(w =>
+                    (option == "T") ||
+                    (option == "H" && w.Active == true) ||
+                    (option == "NH" && w.Active == false)
+                ).ToList();
+        return _mapper.Map<List<ProductTypeDTO>>(list);
+    }       
 
 }

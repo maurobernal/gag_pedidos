@@ -11,13 +11,13 @@ builder.Services.AddControllersWithViews()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver());
 // Add Kendo UI services to the services container"
 builder.Services.AddKendo();
-builder.Services.AddHttpClient("PokeApi", c => c.BaseAddress = new Uri("https://pokeapi.co/api/v2/pokemon/"));
-builder.Services.AddTransient<IPokemonService, PokemonService>();
 
 builder.Services.AddHttpClient("Backend", c => c.BaseAddress = new Uri("https://localhost:7244/"));
 builder.Services.AddTransient<IOriginService, OriginService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IProductTypeService, ProductTypeService>();
+builder.Services.AddTransient<IOrderService, OrderService>();
+builder.Services.AddTransient<IOrderDetailService, OrderDetailService>();
 
 var app = builder.Build();
 
@@ -38,6 +38,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=User}/{action=Profile}/{id?}");
+    pattern: "{controller=api}/{action=order}/{id?}");
 
 app.Run();

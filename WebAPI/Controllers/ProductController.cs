@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebAPI.DTOs;
 using WebAPI.Interface;
+using WebAPI.Validators;
 
 namespace WebAPI.Controllers;
 
@@ -18,7 +19,22 @@ public class ProductController : Controller
     [HttpPost]
     public IActionResult Create([FromBody] ProductDTO product)
     {
+        ProductValidator prodValidation = new ProductValidator();
+
+        var errors = prodValidation.Validate(product);
+
+
+        if (!errors.IsValid)
+        {
+            foreach (var error in errors.Errors)
+            {
+                throw new Exception(error.ErrorMessage);
+            }
+
+
+        }
         var res = _productService.AddProduct(product);
+
         return Ok(res);
     }
 
@@ -47,6 +63,13 @@ public class ProductController : Controller
     }
 
     [HttpGet("List")]
+    public IActionResult ListAll(string option = "T")
+    {
+        var res = _productService.SelectListProduct(option);
+        return Ok(res);
+    }
+
+    [HttpGet("ListProducts")]
     public IActionResult ListAll()
     {
         var res = _productService.SelectListProduct();

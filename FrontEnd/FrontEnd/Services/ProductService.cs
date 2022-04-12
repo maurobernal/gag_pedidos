@@ -8,11 +8,10 @@ public class ProductService : IProductService
     private IHttpClientFactory _httpClientFactory;
     public ProductService(IHttpClientFactory httpClientFactory) => _httpClientFactory = httpClientFactory;
 
-    public async Task<List<ProductModel>> GetAll()
+    public async Task<List<ProductModel>> GetAll(string option)
     {
         var client = _httpClientFactory.CreateClient("Backend");
-
-        return await client.GetFromJsonAsync<List<ProductModel>>("Product/List");
+        return await client.GetFromJsonAsync<List<ProductModel>>($"Product/List?option={option}");
     }
     public async Task<ProductModel> Get(int id)
     {
@@ -51,4 +50,10 @@ public class ProductService : IProductService
         return await response.Content.ReadFromJsonAsync<ProductModel>();
     }
 
+    public async Task<List<ProductModel>> GetProductsAsync()
+    {
+        var client = _httpClientFactory.CreateClient("Backend");
+
+        return await client.GetFromJsonAsync<List<ProductModel>>("Product/ListProducts");
+    }
 }

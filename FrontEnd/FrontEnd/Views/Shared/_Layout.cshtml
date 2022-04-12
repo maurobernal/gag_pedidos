@@ -24,7 +24,7 @@
 <body class="k-content">
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid d-flex justify-content-between p-0">
-            <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">Your .NET Core Application</a>
+            <a class="navbar-brand d-flex align-items-center" asp-controller="api" asp-action="Order">Global Pedidos</a>
             <button id="configure" class="k-rpanel-toggle k-button k-button-md k-button-rectangle k-button-solid-primary btn-toggle">
                 <span class="k-icon k-i-menu"></span>
             </button>
@@ -36,9 +36,9 @@
                         .Name("Menu")
                         .Items(items =>
                         {
-                            items.Add().Text("Home").Action("Index", "Home", new { area = "" });
-                            items.Add().Text("About").Action("About", "Home", new { area = "" });
-                            items.Add().Text("Contact").Action("Contact", "Home", new { area = "" });
+                            items.Add().Text("Pedidos").Action("Order", "api", new { area = "" });
+                            items.Add().Text("Productos").Action("Products", "api", new { area = "" });
+                            items.Add().Text("Origen").Action("Origin", "api", new { area = "" });
                         })
             )
         </kendo-responsivepanel>
@@ -53,7 +53,7 @@
     <footer class="footer text-center d-flex align-items-center">
         <div class="container-fluid">
             <p class="text-muted">
-                Copyright © @DateTime.Now.Year Progress Software Corporation and/or its subsidiaries or affiliates. All rights reserved.
+                Copyright © @DateTime.Now.Year Software Demo for learning .NET CORE 6. All rights reserved.
             </p>
         </div>
     </footer>

@@ -4,7 +4,7 @@ namespace FrontEnd.Interfaces;
 
 public interface IOriginService
 {
-    public Task<List<OriginModel>> GetAll();
+    public Task<List<OriginModel>> GetAll(string option);
 
     public Task<OriginModel> Get(int id);
 

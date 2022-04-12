@@ -18,7 +18,7 @@ public class ProductService : IProductService
     }
 
     public ProductDTO AddProduct(ProductDTO product)
-    {   
+    {
         var P = _mapper.Map<Product>(product);
 
         _conection.Add(P);
@@ -55,7 +55,21 @@ public class ProductService : IProductService
     public ProductDTO SelectProduct(int ID) => _mapper.Map<ProductDTO>(_conection.Products.FirstOrDefault(p => p.id == ID && p.Active));
 
 
-    public List<ProductDTO> SelectListProduct() => _mapper.Map<List<ProductDTO>>(_conection.Products.Where(p => p.Active == true).ToList());
+    public List<ProductDTO> SelectListProduct(string option)
+    {
+        List<Product> list = new List<Product>();
+
+        list = _conection.Products
+            .Where(w =>
+               (option == "T") ||
+               (option == "H" && w.Active == true) ||
+               (option == "NH" && w.Active == false)
+            )
+            .ToList();
+        return _mapper.Map<List<ProductDTO>>(list);
+    }
+
+    public List<ProductDTO> SelectListProduct() => _mapper.Map<List<ProductDTO>>(_conection.Products.ToList());
 
 }
 

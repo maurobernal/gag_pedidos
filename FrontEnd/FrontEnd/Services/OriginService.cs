@@ -7,11 +7,11 @@ public class OriginService : IOriginService
     private IHttpClientFactory _httpClientFactory;
     public OriginService(IHttpClientFactory httpClientFactory) => _httpClientFactory = httpClientFactory;
 
-    public async Task<List<OriginModel>> GetAll()
+    public async Task<List<OriginModel>> GetAll(string option)
     {
         var client = _httpClientFactory.CreateClient("Backend");
 
-        return await client.GetFromJsonAsync<List<OriginModel>>("Origin/List");
+        return await client.GetFromJsonAsync<List<OriginModel>>($"Origin/List?option={option}");
     }
     public async Task<OriginModel> Get(int id)
     {

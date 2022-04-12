@@ -44,5 +44,7 @@ public class AppDBContext : DbContext
     public virtual DbSet<Origin> Origins { get; set; }
     public virtual DbSet<Product> Products { get; set; }
     public virtual DbSet<ProductType> ProductsTypes { get; set; }
+    public virtual DbSet<Order> Orders { get; set; }
+    public virtual DbSet<OrderDetail> OrdersDetails { get; set; }
 }
 

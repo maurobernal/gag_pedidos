@@ -22,7 +22,7 @@ public class ProductTypeController : Controller
         return Ok(res);
     }
 
-    [HttpPut("id")]
+    [HttpPut("{id}")]
     public IActionResult Update(ProductTypeDTO productType, int id)
     {
         if (id != productType.id) return BadRequest();
@@ -30,14 +30,14 @@ public class ProductTypeController : Controller
         return Ok(res);
     }
 
-    [HttpDelete("id")]
+    [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
         var res = _productTypeService.DeleteProductType(id);
         return Ok(res);
     }
 
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     public IActionResult ListOne(int id)
     {
         var res = _productTypeService.SelectProductType(id);
@@ -47,9 +47,9 @@ public class ProductTypeController : Controller
     }
 
     [HttpGet("List")]
-    public IActionResult ListAll()
+    public IActionResult ListAll(string option="T")
     {
-        var res = _productTypeService.SelectListProductType();
+        var res = _productTypeService.SelectListProductType(option);
         return Ok(res);
     }
 }

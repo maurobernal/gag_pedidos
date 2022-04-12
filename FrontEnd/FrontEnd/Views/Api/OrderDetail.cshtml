@@ -1,0 +1,54 @@
+﻿@using FrontEnd.Models
+
+<script src="~/js/crud.js"></script>
+
+@{
+    var order = ViewData["order"] as OrderModel;
+}
+
+<script type="text/javascript">
+    orderId = @order.Id
+    urlUpdateOrder = "@Url.Action("Grid_Update_Order", "api")";
+</script>
+
+@(Html.Kendo()
+    .Button()
+    .Name("Confirmar")
+    .Content("Confirmar Pedido")
+    .Events(e => e.Click("Confirm"))
+)
+
+@(Html.Kendo().Grid<OrderDetailModel>()
+        .Name("Grid")
+        .Columns(columns =>
+        {
+            columns.Bound(p => p.ProductItem)
+            .ClientTemplate("#: (typeof(ProductItem) == 'undefined' ) ? '' : ProductItem.Description #")
+            .Width(150).Title("Producto");
+            columns.Bound(p => p.Amount).Width(50).Title("Cantidad");
+            columns.Bound(p => p.Description).Width(250).Title("Observación");
+            columns.Command(command => command.Destroy()).Width(80);
+        })
+        .ToolBar(toolBar =>
+        {
+            toolBar.Create();
+            toolBar.Save();
+        })
+        .Editable(editable => editable.Mode(GridEditMode.InCell))
+        .DataSource(dataSource => dataSource
+            .Ajax()
+
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+                model.Field(p => p.ProductItem);
+                model.Field(d => d.Description);
+                model.Field(a => a.Amount);
+
+            })
+            .Read(read => read.Action("Grid_Read_OrderDetail", "api").Data("GetOrderId"))
+            .Update(update => update.Action("Grid_Update_OrderDetail", "api").Data("GetOrderId"))
+            .Create(create => create.Action("Grid_Create_OrderDetail", "api").Data("GetOrderId"))
+            .Destroy(destroy => destroy.Action("Grid_Delete_OrderDetail", "api").Data("GetOrderId"))
+        )
+)
